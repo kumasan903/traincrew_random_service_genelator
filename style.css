@@ -1,0 +1,41 @@
+body {
+	font-size: larger;
+}
+
+h2 {
+	text-align: center;
+}
+
+select {
+	height: 30px;
+	vertical-align: middle;
+	font-size: large;
+}
+
+input {
+	height: 30px;
+	vertical-align: middle;
+}
+
+button {
+	font-size: xx-large;
+	width: 40%;
+	margin-inline: 30%;
+	margin-block: 20px;
+}
+
+.main {
+	background-color: #cce5ff;
+	width: 350px;
+	margin-inline: auto;
+	padding: 15px;
+}
+
+.line {
+	margin-block: 10px;
+}
+
+.kumasan {
+	font-size:small;
+	text-align: center;
+}
