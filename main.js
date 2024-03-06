@@ -15,12 +15,45 @@
 天候リスト = ["晴", "晴", "晴", "晴", "晴", "晴", "曇", "雨", "雪", "晴/曇", "晴/雨", "晴/雪", "曇/雨", "曇/雪"]
 車両_通勤型 = ["5320形", "5300形", "4300形", "4000形", "4000形(更新車)"]
 車両_特急型 = ["50000形"]
+車両_6両 = ["4000形6両", "4000形(更新車) 6両"]
+車両_4両 = ["5320形4両", "5300形4両", "4300形4両", "4321F"]
+車両_2両 = ["5300形2両", "4300形2両"]
+
+function generate_train(car_length) {
+	編成 = ""
+	l = [2, 4, 6]
+	while (car_length > 0)
+	{
+		tmp = 20
+		while (tmp > car_length)
+			tmp = l[Math.floor(Math.random() * 3)]
+		if (tmp == 2)
+		{
+			編成 += 車両_2両[Math.floor(Math.random() * 車両_2両.length)]
+			car_length -= 2
+		}
+		else if (tmp == 4)
+		{
+			編成 += 車両_4両[Math.floor(Math.random() * 車両_4両.length)]
+			car_length -= 4
+		}
+		else if (tmp == 6)
+		{
+			編成 += 車両_6両[Math.floor(Math.random() * 車両_6両.length)]
+			car_length -= 6
+		}
+		if (car_length > 0)
+			編成 += " + "
+	}
+	return(編成)
+}
 
 function generate() {
 	運転する列車 = document.getElementById("運転する列車")
 	天候 = document.getElementById("天候")
 	使用車両 = document.getElementById("使用車両")
 	車両タイプ = document.getElementById("車両タイプ").value
+	両数 = document.getElementById("両数").value
 	方面 = document.getElementById("方面").value
 	普通 = document.getElementById("普通").checked
 	準急 = document.getElementById("準急").checked
@@ -29,26 +62,12 @@ function generate() {
 	特急 = document.getElementById("特急").checked
 	回送 = document.getElementById("回送").checked
 	生成する列車リスト = []
-	生成する車両リスト = []
 	if (車両タイプ == "すべて")
 	{
-		if (Math.floor(Math.random() * 4)==0)
-		{
+		if (Math.floor(Math.random() * 4) == 0)
 			車両タイプ = "特急型"
-			生成する車両リスト = 車両_特急型
-		}
 		else
-		{
 			車両タイプ = "通勤型"
-			生成する車両リスト = 車両_通勤型
-		}
-	}
-	else
-	{
-		if (車両タイプ == "通勤型")
-			生成する車両リスト = 車両_通勤型
-		if (車両タイプ == "特急型")
-			生成する車両リスト = 車両_特急型
 	}
 	if (方面 == "すべて" || 方面 == "上り")
 	{
@@ -98,7 +117,25 @@ function generate() {
 	}
 	運転する列車.innerHTML = "列車番号：" + 生成する列車リスト[Math.floor(Math.random() * 生成する列車リスト.length)]
 	天候.innerHTML = "天候：" + 天候リスト[Math.floor(Math.random() * 天候リスト.length)]
-	使用車両.innerHTML = "車両：" + 生成する車両リスト[Math.floor(Math.random() * 生成する車両リスト.length)]
+	if (車両タイプ == "通勤型")
+	{
+		if (両数 == "すべて")
+		{
+			l = [2, 4, 6]
+			使用車両.innerHTML = "車両：" + generate_train(parseInt(l[Math.floor(Math.random() * 3)]))
+		}
+		else if (両数 == "すべて(2両を除く)")
+		{
+			l = [4, 6]
+			使用車両.innerHTML = "車両：" + generate_train(parseInt(l[Math.floor(Math.random() * 2)]))
+		}
+		else
+		{
+			使用車両.innerHTML = "車両：" + generate_train(parseInt(両数))
+		}
+	}
+	else
+		使用車両.innerHTML = "車両：" + 車両_特急型[Math.floor(Math.random() * 車両_特急型.length)]
 }
 
 function select_all()
